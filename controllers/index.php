@@ -1,5 +1,5 @@
 <?php
 
-$heading = "Home";
-
-require "views/index.view.php";
+view("contact.view.php", [
+    'heading' => 'Contact Us',
+]);
