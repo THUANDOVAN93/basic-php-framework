@@ -29,12 +29,12 @@ if (! Validator::string($_POST['body'], 1, 1000)) {
 
 // if no validation errors, update a record in database notes table
 
-if (! empty($errors)) {
-    view("notes/edit.view.php", [
+if (count($errors)) {
+    return view("notes/edit.view.php", [
         'heading' => 'Edit Note',
         'errors' => $errors,
+        'note' => $note
     ]);
-    die();
 }
 
 $db->query('update notes set body = :body where id = :id', [
