@@ -1,28 +1,22 @@
 <?php
 
-use Core\Database;
-use Core\Validator;
 use Core\App;
+use Core\Authenticator;
+use Core\Database;
+use Http\Forms\LoginForm;
 
 $email = $_POST["email"];
 $password = $_POST["password"];
 
 // validate form inputs
 
-$errors = [];
-if (!Validator::email($email)) {
-    $errors['email'] = 'Please enter a valid email address';
-}
-
-if (!Validator::string($password, 7, 255)) {
-    $errors['password'] = 'Please provide a password at least 7 characters long';
-}
-
-if (! empty($errors)) {
-    return view('registration/create.view.php', [
-        'errors' => $errors
+$form = new LoginForm();
+if (! $form->validate($email, $password)) {
+        return view('registration/create.view.php', [
+        'errors' => $form->errors()
     ]);
 }
+
 
 // check if account already exists
 $db = App::resolve(Database::class);
@@ -40,7 +34,8 @@ if ($user) {
         'password' => password_hash($password, PASSWORD_BCRYPT)
     ]);
 
-    login($user);
+    $auth = new Authenticator();
+    $auth->attempt($email, $password);
 
     header('Location: /');
     exit();

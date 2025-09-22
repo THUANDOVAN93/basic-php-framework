@@ -1,5 +1,8 @@
 <?php
 
+use Core\Session;
+use Core\ValidationException;
+
 session_start();
 const BASE_PATH = __DIR__.'/../';
 
@@ -21,4 +24,15 @@ $router = new \Core\Router();
 
 require base_path('routes.php');
 
-$router->route($uri, $method);
+try {
+    $router->route($uri, $method);
+} catch (ValidationException $exception) {
+    Session::flash('errors', $exception->errors);
+    Session::flash('old', $exception->old);
+
+    redirect($router->previousUrl());
+}
+
+Session::unFlash('errors');
+Session::unFlash('old');
+
