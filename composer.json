@@ -1,0 +1,27 @@
+{
+    "name": "thuandovan/basic-php-framework",
+    "autoload": {
+        "psr-4": {
+            "Thuandovan\\BasicPhpFramework\\": "src/",
+            "Core\\": "Core/",
+            "Http\\": "Http/"
+        }
+    },
+    "authors": [
+        {
+            "name": "THUAN DO VAN",
+            "email": "thuandovan93@gmail.com"
+        }
+    ],
+    "require": {
+        "illuminate/collections": "^10.49"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.36"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}
